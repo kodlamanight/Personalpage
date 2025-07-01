@@ -3,357 +3,333 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>AFK | GTA Nametag İçli</title>
-<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500&display=swap" rel="stylesheet" />
+<title>AFK | GTA Nametag</title>
 <style>
-  /* Genel */
-  body {
-    margin:0; font-family: 'Rajdhani', sans-serif; overflow-x:hidden;
+  @font-face {
+    font-family: 'Minecraftia';
+    src: url('https://cdn.jsdelivr.net/gh/innative/minecraftia-font/Minecraftia.ttf') format('truetype');
   }
-  .background {
-    position: fixed; inset: 0;
+
+  body {
+    margin: 0; padding: 0;
+    font-family: 'Rajdhani', sans-serif;
     background: url('https://i.imgur.com/yAOE7GF.jpg') no-repeat center center fixed;
     background-size: cover;
     filter: blur(3px);
-    z-index: -2;
+    height: 100vh;
+    overflow: hidden;
   }
-  /* Yükleniyor */
-  .intro {
+
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0,0,0,0.75);
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  /* Loading Screen */
+  #loading {
     position: fixed; inset: 0;
-    background: #000;
-    display: flex; flex-direction: column;
-    justify-content: center; align-items: center;
-    font-size: 2rem; color: #fff; z-index: 9999;
+    background: black;
+    color: white;
+    font-weight: bold;
+    font-size: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    user-select: none;
+    animation: shake 0.3s infinite;
   }
+
+  @keyframes shake {
+    0%, 100% {transform: translate(0,0);}
+    20%, 60% {transform: translate(-3px,3px);}
+    40%, 80% {transform: translate(3px,-3px);}
+  }
+
   .progress-bar {
-    width: 80%; height: 12px;
-    background: #222; margin-top: 20px;
-    border-radius: 6px; overflow: hidden;
+    width: 80%;
+    height: 14px;
+    background: #222;
+    border-radius: 7px;
+    margin-top: 30px;
+    overflow: hidden;
     position: relative;
+    animation: shake 0.3s infinite;
   }
+
   .progress-fill {
     height: 100%;
     width: 0%;
     background: linear-gradient(90deg, red, orange, yellow, lime, cyan, blue, violet);
     animation: loadingBar 4s linear forwards;
   }
-  @keyframes loadingBar { to { width: 100%; } }
-  .car-icon {
-    position: absolute; bottom: 15px; left: 10px;
-    width: 120px; height: 60px;
+
+  @keyframes loadingBar {
+    to {width: 100%;}
   }
-  /* Araba SVG */
+
   .car-svg {
-    width: 120px; height: 60px;
+    position: absolute;
+    bottom: -50px;
+    left: 10px;
+    width: 130px;
+    height: 65px;
   }
 
-  main {
-    padding-top: 120px;
+  /* Main Content */
+  #main {
     display: none;
-  }
-  .section {
-    min-height: 100vh;
-    display: flex; justify-content: center; align-items: center;
-    padding: 20px;
-  }
-  .card {
-    background: rgba(0,0,0,0.7);
-    border-radius: 12px; padding: 40px 50px 50px;
-    text-align: center;
-    transition: color 0.3s, background 0.3s;
     position: relative;
-    max-width: 650px;
-  }
-  /* Tipwriter AFK */
-  .typewriter-text span {
-    opacity: 0;
-    display: inline-block;
-    animation: reveal 0.4s forwards;
-  }
-  @keyframes reveal { to { opacity: 1; } }
-  .typewriter-text {
-    font-size: 3rem;
-    margin-bottom: 20px;
-    user-select: none;
+    z-index: 1;
+    color: white;
+    text-align: center;
+    padding: 100px 20px 40px;
+    max-width: 600px;
+    margin: 0 auto;
+    background: rgba(0,0,0,0.85);
+    border-radius: 12px;
   }
 
-  /* GTA karakter + nametag container */
+  /* Character & Nametag */
   .character-wrapper {
     position: relative;
     display: inline-block;
     margin-bottom: 20px;
   }
+
   .character {
-    width: 90px; height: 120px;
-    filter: drop-shadow(0 0 6px #000);
-    border-radius: 8px;
-  }
-  .nametag-small {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translate(-50%, -120%);
-    background: rgba(0,0,0,0.85);
-    padding: 4px 14px;
-    border-radius: 12px;
-    color: #0ff;
-    font-weight: 700;
-    font-size: 1.1rem;
-    box-shadow: 0 0 6px #0ff, 0 0 10px #0ff inset;
-    animation: hueRotate 3s linear infinite;
-    user-select: none;
-    white-space: nowrap;
-    pointer-events: none;
-    font-family: 'Rajdhani', monospace;
-  }
-  @keyframes hueRotate {
-    0% { filter: hue-rotate(0deg); }
-    100% { filter: hue-rotate(360deg); }
+    width: 90px;
+    height: 120px;
+    image-rendering: pixelated;
+    filter: drop-shadow(0 0 8px #000);
+    border-radius: 6px;
   }
 
-  /* Glitch effect on h2 */
+  .nametag {
+    position: absolute;
+    top: -22px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.9);
+    color: #0ff;
+    font-family: 'Minecraftia', monospace;
+    font-weight: 700;
+    font-size: 14px;
+    padding: 3px 9px;
+    border-radius: 5px;
+    box-shadow: 0 0 6px #0ff inset;
+    user-select: none;
+    pointer-events: none;
+  }
+
+  /* Typewriter AFK */
+  #afk-text span {
+    opacity: 0;
+    display: inline-block;
+    animation: reveal 0.4s forwards;
+  }
+
+  @keyframes reveal {
+    to {opacity: 1;}
+  }
+
+  #afk-text {
+    font-size: 3rem;
+    margin-bottom: 15px;
+    user-select: none;
+  }
+
+  /* Glitch effect for Public Relations */
   h2.glitch {
     position: relative;
     color: white;
     font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 20px;
   }
+
   h2.glitch::before,
   h2.glitch::after {
     content: attr(data-text);
     position: absolute;
-    left: 0; width: 100%;
+    left: 0;
+    width: 100%;
     overflow: hidden;
     color: #f00;
-    clip: rect(0, 900px, 0, 0);
+    clip: rect(0, 9999px, 0, 0);
   }
+
   h2.glitch::before {
     animation: glitchTop 1s infinite linear alternate-reverse;
   }
+
   h2.glitch::after {
     animation: glitchBottom 1s infinite linear alternate-reverse;
     color: #0ff;
   }
+
   @keyframes glitchTop {
-    0% { clip: rect(0, 999px, 0, 0); }
-    10% { clip: rect(5px, 999px, 20px, 0); left: 2px; }
-    20% { clip: rect(10px, 999px, 25px, 0); left: -2px; }
-    30% { clip: rect(5px, 999px, 15px, 0); left: 2px; }
-    100% { clip: rect(0, 999px, 0, 0); }
+    0% { clip: rect(0, 9999px, 0, 0); }
+    10% { clip: rect(5px, 9999px, 20px, 0); left: 2px; }
+    20% { clip: rect(10px, 9999px, 25px, 0); left: -2px; }
+    30% { clip: rect(5px, 9999px, 15px, 0); left: 2px; }
+    100% { clip: rect(0, 9999px, 0, 0); }
   }
+
   @keyframes glitchBottom {
-    0% { clip: rect(0, 999px, 0, 0); }
-    10% { clip: rect(30px, 999px, 40px, 0); left: -2px; }
-    20% { clip: rect(35px, 999px, 45px, 0); left: 2px; }
-    30% { clip: rect(40px, 999px, 50px, 0); left: -1px; }
-    100% { clip: rect(0, 999px, 0, 0); }
+    0% { clip: rect(0, 9999px, 0, 0); }
+    10% { clip: rect(30px, 9999px, 40px, 0); left: -2px; }
+    20% { clip: rect(35px, 9999px, 45px, 0); left: 2px; }
+    30% { clip: rect(40px, 9999px, 50px, 0); left: -1px; }
+    100% { clip: rect(0, 9999px, 0, 0); }
   }
 
-  /* Slogan ışık yanıp sönme */
+  /* Slogan */
   .slogan {
-    font-size: 1.2rem;
     font-style: italic;
-    max-width: 600px;
-    margin: 0 auto 25px;
     color: #bbb;
+    max-width: 600px;
+    margin: 0 auto 30px;
     line-height: 1.4;
-  }
-  .slogan .highlight {
-    color: yellow;
-    animation: blink 1.5s infinite;
-    font-weight: bold;
-  }
-  @keyframes blink {
-    0%,100% {opacity: 1;}
-    50% {opacity: 0.3;}
-  }
-
-  /* Sosyal link */
-  .social-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    text-decoration: none;
-    color: white;
-    margin-top: 15px;
-    background: rgba(255,255,255,0.05);
-    padding: 6px 12px;
-    border-radius: 8px;
-  }
-  .rgb-icon {
-    animation: hueRotate 3s linear infinite;
-  }
-  .verified svg {
-    width: 16px; height: 16px;
-    fill: #1da1f2;
-  }
-
-  /* Tema butonu */
-  .theme-toggle {
-    margin-top: 20px;
-    padding: 10px 20px;
-    background: linear-gradient(45deg, red, green, blue);
-    color: white;
-    border: none;
-    border-radius: 20px;
-    cursor: pointer;
-    font-weight: bold;
-  }
-
-  /* Saat */
-  .clock {
-    margin-top: 15px;
+    user-select: none;
     font-size: 1.2rem;
-    font-family: monospace;
   }
 
-  /* Footer */
+  .slogan .highlight {
+    font-weight: bold;
+    animation: flicker 3s infinite;
+    color: yellow;
+  }
+
+  @keyframes flicker {
+    0%, 100% {filter: brightness(0.5);}
+    40%, 60% {filter: brightness(1.8);}
+    45%, 55% {filter: brightness(0.3);}
+  }
+
+  /* Instagram toggle */
+  #insta-toggle {
+    background: rgba(255,255,255,0.1);
+    border-radius: 8px;
+    padding: 10px 15px;
+    color: white;
+    cursor: pointer;
+    width: fit-content;
+    margin: 0 auto 10px;
+    font-weight: 600;
+    border: 1px solid #0ff;
+    transition: background 0.3s ease;
+    user-select: none;
+  }
+
+  #insta-toggle:hover {
+    background: rgba(255,255,255,0.25);
+  }
+
+  #insta-link {
+    display: none;
+    color: white;
+    user-select: text;
+    font-weight: 600;
+  }
+
+  #insta-link a {
+    color: #0ff;
+    text-decoration: underline;
+  }
+
   footer {
-    text-align: center;
-    padding: 20px;
+    margin-top: 50px;
     font-size: 0.8rem;
-    color: #888;
+    color: #666;
+    text-align: center;
+    user-select: none;
   }
-
-  /* Tema renkleri */
-  .theme-1 { background-color: #111; color: #fff; }
-  .theme-1 .card { background: rgba(0,0,0,0.7); color: #fff; }
-  .theme-2 { background-color: #1e1e1e; color: #0ff; }
-  .theme-2 .card { background: rgba(0,255,255,0.1); color: #0ff; }
-  .theme-3 { background-color: #000; color: #f0f; }
-  .theme-3 .card { background: rgba(255,0,255,0.1); color: #f0f; }
-  .theme-4 { background-color: #202020; color: #ff0; }
-  .theme-4 .card { background: rgba(255,255,0,0.1); color: #ff0; }
-  .theme-5 { background-color: #080808; color: #f55; }
-  .theme-5 .card { background: rgba(255,0,0,0.1); color: #f55; }
-  .theme-6 { background-color: #222; color: #2df; }
-  .theme-6 .card { background: rgba(0,255,255,0.1); color: #2df; }
-  .theme-7 { background-color: #333; color: #0f0; }
-  .theme-7 .card { background: rgba(0,255,0,0.1); color: #0f0; }
-  .theme-8 { background-color: #444; color: #ff7700; }
-  .theme-8 .card { background: rgba(255,119,0,0.1); color: #ff7700; }
-  .theme-9 { background-color: #555; color: #00ffff; }
-  .theme-9 .card { background: rgba(0,255,255,0.1); color: #00ffff; }
-  .theme-10 { background-color: #000; color: #fff; }
-  .theme-10 .card { background: rgba(255,255,255,0.1); color: #fff; }
 </style>
 </head>
-<body class="theme-1">
+<body>
 
-<div class="background"></div>
-
-<div class="intro" id="intro" aria-live="polite" aria-busy="true" aria-label="Yükleniyor ekranı">
+<div id="loading" role="alert" aria-live="assertive" aria-atomic="true">
   Yükleniyor...
   <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100">
     <div class="progress-fill"></div>
-    <div class="car-icon" aria-hidden="true">
-      <svg class="car-svg" viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="none" >
-        <rect x="15" y="20" width="90" height="20" rx="8" ry="8" fill="#122b55" />
-        <circle cx="35" cy="45" r="8" fill="#fff" />
-        <circle cx="85" cy="45" r="8" fill="#fff" />
-        <rect x="45" y="10" width="30" height="10" rx="3" ry="3" fill="#0c1a3c" />
-      </svg>
-    </div>
+    <svg class="car-svg" viewBox="0 0 120 60" aria-hidden="true" focusable="false">
+      <rect x="15" y="20" width="90" height="20" rx="8" ry="8" fill="#122b55" />
+      <circle cx="35" cy="45" r="8" fill="#fff" />
+      <circle cx="85" cy="45" r="8" fill="#fff" />
+      <rect x="45" y="10" width="30" height="10" rx="3" ry="3" fill="#0c1a3c" />
+    </svg>
   </div>
 </div>
 
-<main id="mainContent" tabindex="-1">
-  <section class="section">
-    <div class="card" role="main" aria-label="Ana içerik kartı">
-      
-      <div class="character-wrapper" aria-label="AFK karakter ve nametag">
-        <img class="character" src="https://i.imgur.com/PLj6vZn.png" alt="Siyahi GTA karakteri" />
-        <div class="nametag-small" aria-label="Karakter nametag AFK">AFK</div>
-      </div>
+<div id="main" tabindex="-1">
+  <div class="character-wrapper" aria-label="AFK karakter ve isim etiketi">
+    <img class="character" src="https://i.imgur.com/7cSK4YT.png" alt="2D Siyahi GTA karakteri" />
+    <div class="nametag" aria-label="Karakter adı">AFK</div>
+  </div>
 
-      <h1 class="typewriter-text" id="typewriter" aria-live="polite" aria-atomic="true"></h1>
+  <div id="afk-text" aria-live="polite" aria-atomic="true"></div>
 
-      <h2 class="glitch" data-text="Public Relations" aria-label="Public Relations glitch efekti">Public Relations</h2>
-      
-      <p class="slogan">
-        "<span class="highlight">Işık</span> yoksa karanlığı yönetirim, ses yoksa sessizlikte yankılanırım."
-      </p>
+  <h2 class="glitch" data-text="Public Relations" aria-label="Public Relations glitch efekti">Public Relations</h2>
 
-      <div class="social" aria-label="Sosyal medya bağlantısı">
-        <a href="https://instagram.com/maincarbu" class="social-link" target="_blank" rel="noopener noreferrer" aria-label="Instagram hesabı @maincarbu">
-          <img class="rgb-icon" src="https://img.icons8.com/ios-glyphs/30/ffffff/instagram-new.png" alt="Instagram" />
-          <span>@maincarbu</span>
-          <span class="verified" aria-label="Doğrulanmış hesap">
-            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-              <path d="M9 16.2l-3.5-3.5 1.41-1.41L9 13.38l7.09-7.09 1.41 1.41z"/>
-            </svg>
-          </span>
-        </a>
-      </div>
+  <p class="slogan" aria-label="Slogan metni">
+    "&quot;<span class="highlight">Işık</span> yoksa karanlığı yönetirim, ses yoksa sessizlikte yankılanırım.&quot;"
+  </p>
 
-      <div class="clock" id="clock" aria-live="polite" aria-atomic="true" aria-label="Canlı saat">--:--:--</div>
-      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Tema değiştir">🌗 Tema Değiştir</button>
-    </div>
-  </section>
-</main>
+  <button id="insta-toggle" aria-expanded="false" aria-controls="insta-link" onclick="toggleInsta()">
+    Instagram adresimi göster
+  </button>
+  <div id="insta-link">
+    <a href="https://instagram.com/maincarbu" target="_blank" rel="noopener noreferrer">@maincarbu</a>
+  </div>
 
-<footer>
-  &copy; 2025 AFK | Bu sayfanın tüm tasarım ve içeriği telif hakkıyla korunmaktadır. İzinsiz kullanım kesinlikle yasaktır.
-</footer>
+  <footer>
+    &copy; 2025 AFK | Bu sayfanın tüm tasarım ve içeriği telif hakkıyla korunmaktadır. İzinsiz kullanım kesinlikle yasaktır.
+  </footer>
+</div>
 
 <script>
-  const themes = [
-    "theme-1","theme-2","theme-3","theme-4","theme-5",
-    "theme-6","theme-7","theme-8","theme-9","theme-10"
-  ];
-  let currentTheme = 0;
-
-  function toggleTheme() {
-    document.body.classList.remove(themes[currentTheme]);
-    currentTheme = (currentTheme + 1) % themes.length;
-    document.body.classList.add(themes[currentTheme]);
-  }
-
-  // Mouse RGB glow effect
-  const glow = document.createElement('div');
-  glow.style.position = 'fixed';
-  glow.style.top = '0';
-  glow.style.left = '0';
-  glow.style.width = '100px';
-  glow.style.height = '100px';
-  glow.style.background = 'radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%)';
-  glow.style.pointerEvents = 'none';
-  glow.style.mixBlendMode = 'screen';
-  glow.style.zIndex = '-1';
-  glow.style.transform = 'translate(-50%, -50%)';
-  glow.style.animation = 'hueRotate 3s linear infinite';
-  document.body.appendChild(glow);
-
-  document.addEventListener('mousemove', e => {
-    glow.style.left = e.pageX + 'px';
-    glow.style.top = e.pageY + 'px';
-  });
-
-  // Saat güncelleme
-  function updateClock() {
-    const now = new Date();
-    document.getElementById('clock').textContent = now.toLocaleTimeString();
-  }
-  setInterval(updateClock, 1000);
-  updateClock();
-
-  // AFK yazısı typewriter animasyonu
-  const text = "AFK";
-  const typewriter = document.getElementById("typewriter");
-  text.split("").forEach((char, i) => {
-    const span = document.createElement("span");
+  // Tipwriter AFK animasyonu
+  const afkText = "AFK";
+  const afkContainer = document.getElementById('afk-text');
+  afkText.split('').forEach((char, i) => {
+    const span = document.createElement('span');
     span.textContent = char;
-    span.style.animationDelay = `${i * 500}ms`;
-    typewriter.appendChild(span);
+    span.style.opacity = '0';
+    span.style.animation = 'reveal 0.4s forwards';
+    span.style.animationDelay = `${i * 600}ms`;
+    afkContainer.appendChild(span);
   });
 
-  // Giriş ekranı kaldırma ve ana içerik gösterme
-  setTimeout(() => {
-    document.getElementById('intro').style.display = 'none';
-    document.getElementById('mainContent').style.display = 'block';
-    // Ana içeriğe odaklan (Erişilebilirlik için)
-    document.getElementById('mainContent').focus();
-  }, 4200);
+  // Instagram toggle
+  function toggleInsta() {
+    const link = document.getElementById('insta-link');
+    const btn = document.getElementById('insta-toggle');
+    if(link.style.display === 'block'){
+      link.style.display = 'none';
+      btn.setAttribute('aria-expanded', 'false');
+      btn.textContent = 'Instagram adresimi göster';
+    } else {
+      link.style.display = 'block';
+      btn.setAttribute('aria-expanded', 'true');
+      btn.textContent = 'Instagram adresimi gizle';
+    }
+  }
 
+  // Loading bar progress and hide loading screen
+  const loading = document.getElementById('loading');
+  const progressFill = loading.querySelector('.progress-fill');
+
+  progressFill.addEventListener('animationend', () => {
+    loading.style.display = 'none';
+    document.getElementById('main').style.display = 'block';
+    document.getElementById('main').focus();
+  });
 </script>
 
 </body>
